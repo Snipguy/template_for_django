@@ -1,11 +1,5 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-
-class CustomUser(AbstractUser):
-    phone_number = models.CharField(max_length=15, blank=True, null=True)
-    phone_number = models.CharField(max_length=15, blank=True, null=True)
-
 
 class MyUserManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, password=None, **extra_fields):
