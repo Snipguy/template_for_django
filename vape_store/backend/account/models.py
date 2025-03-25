@@ -25,7 +25,6 @@ class MyUserManager(BaseUserManager):
 
         return self.create_user(email, first_name, last_name, password, **extra_fields)
 
-# Custom user model
 class MyUser(AbstractBaseUser):
     id = models.AutoField(primary_key=True)  # Specific ID for the user, automated
     user_name = models.CharField(max_length=20)
@@ -39,11 +38,18 @@ class MyUser(AbstractBaseUser):
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
 
     objects = MyUserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
+
+    def has_perm(self, perm, obj=None):
+        return self.is_superuser
+
+    def has_module_perms(self, app_label):
+        return self.is_superuser
 
     def __str__(self):
         return self.email
