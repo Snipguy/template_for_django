@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 class MyUserManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, password=None, **extra_fields):
@@ -26,7 +26,7 @@ class MyUserManager(BaseUserManager):
         return self.create_user(email, first_name, last_name, password, **extra_fields)
 
 class MyUser(AbstractBaseUser):
-    id = models.AutoField(primary_key=True)  # Specific ID for the user, automated
+    id = models.AutoField(primary_key=True)
     user_name = models.CharField(max_length=20)
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
@@ -34,11 +34,19 @@ class MyUser(AbstractBaseUser):
     address = models.TextField()
     phone = models.CharField(max_length=15)
     email = models.EmailField(unique=True)
-    invite_code = models.CharField(max_length=15, blank=True, null=True)  # Optional field
+    invite_code = models.CharField(max_length=15, blank=True, null=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
+
+    groups = models.ManyToManyField(
+        'auth.Group', related_name='custom_user_groups', blank=True
+    )
+
+    user_permissions = models.ManyToManyField(
+        'auth.Permission', related_name='custom_user_permissions', blank=True
+    )
 
     objects = MyUserManager()
 
@@ -53,7 +61,6 @@ class MyUser(AbstractBaseUser):
 
     def __str__(self):
         return self.email
-
 
 # Placeholder for order history (to be implemented later)
 class OrderHistory(models.Model):

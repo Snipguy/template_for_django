@@ -6,5 +6,6 @@ from .models import MyUser
 @receiver(post_save, sender=MyUser)
 def add_user_to_all_users_group(sender, instance, created, **kwargs):
     if created:
+        print(f"Signal triggered for user: {instance.email}")
         group, _ = Group.objects.get_or_create(name='All Users')
         instance.groups.add(group)
