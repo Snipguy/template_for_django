@@ -1,5 +1,5 @@
 """
-WSGI config for vape_store project.
+WSGI config for Django_template project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'vape_store.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Django_template.settings')
 
 application = get_wsgi_application()
